@@ -129,10 +129,10 @@ Resources:
       Roles:
         - UdacityS3ReadOnlyEC2
 
-  Outputs: 
-
-    VPC: 
-        Description: DNS Name of Loadbalancer
-        Value: !GetAtt WebAppLB.DNSName
-        Export:
-          Name: !Sub ${EnvironmentName}-DNSName
+Outputs: 
+  
+  WebAppLB: 
+    Description: DNS Name of Loadbalancer
+    Value: !GetAtt WebAppLB.DNSName
+    Export:
+      Name: !Sub ${EnvironmentName}-DNSName
