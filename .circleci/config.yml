@@ -30,7 +30,7 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - print-hello
-      - print-world:
+      - say-name
+      - recheck-name:
           requires:
-            - print-hello
+            - say-name
