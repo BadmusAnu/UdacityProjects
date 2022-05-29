@@ -10,9 +10,9 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo $AUTHOR_NAME > workspace/name.txt
+      - run: echo $AUTHOR_NAME > name.txt
       - persist_to_workspace:
-          root: workspace
+          root: /tmp/workspace
           paths:
             - "name.txt"
 
