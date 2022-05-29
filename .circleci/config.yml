@@ -43,9 +43,8 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - print_pipeline_id
+      - id-check
       - say-name
       - recheck-name:
           requires:
             - say-name
-            
