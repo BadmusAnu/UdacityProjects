@@ -12,7 +12,7 @@ jobs:
     steps:
       - run: echo $AUTHOR_NAME > name.txt
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: .
           paths:
             - "name.txt"
 
@@ -21,7 +21,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: .
       - run: cat name.txt        
       
 
