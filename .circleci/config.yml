@@ -35,7 +35,14 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: cat name.txt        
+      
+      - run: cat names.txt
+      
+      - run: 
+          name: Upload Failed Tests
+          command: echo "Activate Rollback" 
+          when: on_fail
+                   
       
 
 # Invoke jobs via workflows
