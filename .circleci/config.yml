@@ -5,53 +5,28 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 
-commands:
-  print_pipeline_id:
-    description: "A command to print pipeline ID"
-    steps:
-      - run: echo ${CIRCLE_WORKFLOW_ID}
-
 jobs:
 
-  id-check:
+  create_infrastructure: 
     docker:
-      - image: circleci/node:13.8.0
+      - image: amazon/aws-cli
     steps:
-      - print_pipeline_id
-  
-  say-name:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - run: echo $AUTHOR_NAME > name.txt
-      - persist_to_workspace:
-          root: .
-          paths:
-            - "name.txt"
-
-  recheck-name:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - attach_workspace:
-          at: .
-      
-      - run: cat names.txt
-      
-      - run: 
-          name: Upload Failed Tests
-          command: echo "Activate Rollback" 
-          when: on_fail
-                   
-      
+      - checkout
+      - run:
+          name: Create Cloudformation Stack
+          command: |
+            aws cloudformation deploy \
+              --template-file testcfn.yml \
+              --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+              --region us-east-1
+      # Fail the job intentionally to simulate an error.
+      # Uncomment the line below if you want to fail the current step
+      # - run: return 1
+      #- destroy_environment
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  infra-workflow:
     jobs:
-      - id-check
-      - say-name
-      - recheck-name:
-          requires:
-            - say-name
+      - create_infrastructure
