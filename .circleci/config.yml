@@ -25,7 +25,7 @@ jobs:
       #- destroy_environment
 
 
-configure_infrastructure: 
+configure-infra: 
   docker:
     - image: python:3.7-alpine3.11
   steps:
@@ -45,5 +45,5 @@ workflows:
   infra-workflow:
     jobs:
     # - create_infrastructure
-      - configure_infrastructure
+      - configure-infra
         #  -requires: create_infrastructure
