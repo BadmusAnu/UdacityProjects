@@ -32,6 +32,14 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> inventory
 
+            cat inventory
+      
+      - persist_to_workspace:
+          root: .
+          paths:
+            - inventory
+   
+
       # Fail the job intentionally to simulate an error.
       # Uncomment the line below if you want to fail the current step
       # - run: return 1
@@ -45,6 +53,10 @@ jobs:
       - checkout
       - add_ssh_keys:
               fingerprints: ["cb:a4:a2:c3:ae:5e:be:7a:bb:5d:bd:ba:74:bf:2f:94"] 
+      
+      - attach_workspace:
+          at: .
+      
       - run:
           name: Install Ansible
           command: |
