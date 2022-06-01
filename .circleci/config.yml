@@ -20,6 +20,14 @@ jobs:
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-east-1
 
+  update_infra: 
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Update Inventory file
+          command: |
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> inventory
@@ -50,6 +58,9 @@ workflows:
   infra-workflow:
     jobs:
       - create_infrastructure
+      - update_infra:
+         requires:
+           - create_infrastructure      
       - configure-infra:
          requires:
-           - create_infrastructure
+           - update_infra
