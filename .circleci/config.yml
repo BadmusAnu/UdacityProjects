@@ -19,6 +19,11 @@ jobs:
               --template-file testcfn.yml \
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-east-1
+
+            aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --output text >> inventory
+              
       # Fail the job intentionally to simulate an error.
       # Uncomment the line below if you want to fail the current step
       # - run: return 1
@@ -44,6 +49,6 @@ jobs:
 workflows:
   infra-workflow:
     jobs:
-    # - create_infrastructure
-      - configure-infra
-        #  -requires: create_infrastructure
+      - create_infrastructure
+      - configure-infra:
+          -requires: create_infrastructure

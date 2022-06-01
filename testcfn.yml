@@ -10,7 +10,7 @@ Resources:
       KeyName: uda_aws
       # Change this, as applicable to you
       # You may need to find out what instance types are available in your region - use https://cloud-images.ubuntu.com/locator/ec2/
-      ImageId: 'ami-06eecef118bbf9259' 
+      ImageId: 'ami-0c4f7023847b90238' 
       InstanceType: t2.micro
   InstanceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
