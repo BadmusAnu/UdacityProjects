@@ -24,9 +24,26 @@ jobs:
       # - run: return 1
       #- destroy_environment
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+
+configure_infrastructure: 
+  docker:
+    - image: python:3.7-alpine3.11
+  steps:
+    - checkout
+    - add_ssh_keys:
+            fingerprints: ["cb:a4:a2:c3:ae:5e:be:7a:bb:5d:bd:ba:74:bf:2f:94"] 
+    - run:
+        name: Install Ansible
+        command: |
+          apk add --update ansible
+    - run:
+        name: Run Playbook and Configure server
+        command: |
+          ansible-playbook -i inventory main.yml
+
 workflows:
   infra-workflow:
     jobs:
-      - create_infrastructure
+    # - create_infrastructure
+      - configure_infrastructure
+        #  -requires: create_infrastructure
