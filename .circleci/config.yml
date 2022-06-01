@@ -34,10 +34,10 @@ jobs:
 
             cat inventory
       
-      - persist_to_workspace:
-          root: .
+      - save_cache:
           paths:
-            - inventory
+            - "."
+          key: invenfile
    
 
       # Fail the job intentionally to simulate an error.
@@ -54,8 +54,8 @@ jobs:
       - add_ssh_keys:
               fingerprints: ["cb:a4:a2:c3:ae:5e:be:7a:bb:5d:bd:ba:74:bf:2f:94"] 
       
-      - attach_workspace:
-          at: .
+      - restore_cache:
+          key: invenfile
       
       - run:
           name: Install Ansible
